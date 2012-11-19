@@ -1,1 +1,1 @@
-from potion import BaseEntity, Entity, Field, Unicode, metadata, setup_entities, get_entities, create_all, create_engine
+from potion import BaseEntity, Entity, Field, Unicode, metadata, setup_entities, get_entities, create_all, create_engine, entities

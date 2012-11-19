@@ -8,10 +8,21 @@ from utils import is_subclass, is_instance, load_module
 BaseEntity = declarative_base()
 metadata = BaseEntity.metadata
 
+entities = []
+sqlalchemy_entities = []
+
+
+class EntityMeta(type):
+
+    def __init__(cls, name, bases, dct):
+
+        if not cls in entities:
+            entities.append(cls)
+
 
 class Entity(object):
 
-    pass
+    __metaclass__ = EntityMeta
 
 
 class Field(object):
@@ -27,11 +38,9 @@ def get_entities(name, path=None):
     return [model for name, model in models.__dict__.iteritems() if is_subclass(model, Entity)]
 
 
-def setup_entities(entities):
+def setup_entities(potion_entities):
 
-    sql_slchemy_entities = []
-
-    for entity in entities:
+    for entity in potion_entities:
 
         attrs = {}        
 
@@ -42,11 +51,21 @@ def setup_entities(entities):
         attrs.setdefault("id", Column(Integer, primary_key=True))
         attrs.setdefault("__tablename__", entity.__name__)
 
-        sql_slchemy_entities.append(type("Model", (BaseEntity, ), attrs))
+        sqlalchemy_entities.append(type("Model", (BaseEntity, ), attrs))
 
-    return sql_slchemy_entities
+    return sqlalchemy_entities
+
+
+def clean_entities():
+
+    return [entity for entity in entities if not entity is Entity]
 
 
 def create_all():
+    
+    if not sqlalchemy_entities:
+
+        potion_entities = clean_entities()
+        setup_entities(potion_entities)
 
     metadata.create_all()
