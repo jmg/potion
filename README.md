@@ -1,7 +1,5 @@
 ## Elixir-like declarative layer for sql-alchemy
 
-------------------------------------------------------------------
-
 Potion is a Elixir-like declarative layer for sql-alchemy.
  
 So far it just cover a little bit of the functionality of the [elixir library](http://elixir.ematia.de/trac/wiki).
