@@ -34,3 +34,17 @@ class TestBase(unittest.TestCase):
         potion.create_all()
 
         self.assertTrue(os.path.isfile(db_name))
+
+    def test_create_entities_user_api(self):
+
+        if os.path.isfile("db.sqlite"):
+            remove("db.sqlite")
+
+        #User example
+        from models import *
+
+        potion.metadata.bind = potion.create_engine('sqlite:///db.sqlite')
+        potion.create_all()
+        #End user example
+
+        self.assertTrue(os.path.isfile("db.sqlite"))
